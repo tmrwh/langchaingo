@@ -174,6 +174,9 @@ func (c *Client) buildURL(suffix string, model string) string {
 }
 
 func (c *Client) buildAzureURL(suffix string, model string) string {
+	if strings.Contains(model, "DeepSeek") {
+		return c.baseURL
+	}
 	baseURL := c.baseURL
 	baseURL = strings.TrimRight(baseURL, "/")
 
