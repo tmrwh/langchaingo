@@ -65,6 +65,9 @@ type chainCallOption struct {
 
 	// CallbackHandler is the callback handler for Chain
 	CallbackHandler callbacks.Handler
+
+	ResponseFormat any
+	JsonMode 	bool
 }
 
 // WithModel is an option for LLM.Call.
@@ -161,6 +164,18 @@ func WithCallback(callbackHandler callbacks.Handler) ChainCallOption {
 	}
 }
 
+func WithJsonMode(jsonMode bool) ChainCallOption {
+	return func(o *chainCallOption) {
+		o.JsonMode = jsonMode
+	}
+}
+
+func WithReponseFormat(reponseFormat any) ChainCallOption {
+	return func(o *chainCallOption) {
+		o.ResponseFormat = reponseFormat
+	}
+}
+
 func getLLMCallOptions(options ...ChainCallOption) []llms.CallOption { //nolint:cyclop
 	opts := &chainCallOption{}
 	for _, option := range options {
@@ -204,6 +219,12 @@ func getLLMCallOptions(options ...ChainCallOption) []llms.CallOption { //nolint:
 	}
 	if opts.repetitionPenaltySet {
 		chainCallOption = append(chainCallOption, llms.WithRepetitionPenalty(opts.RepetitionPenalty))
+	}
+	if opts.JsonMode {
+		chainCallOption = append(chainCallOption, llms.WithJSONMode())
+	}
+	if opts.ResponseFormat != nil {
+		chainCallOption = append(chainCallOption, llms.WithResponseFormat(opts.ResponseFormat))
 	}
 	chainCallOption = append(chainCallOption, llms.WithStreamingFunc(opts.StreamingFunc))
 
