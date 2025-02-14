@@ -114,7 +114,11 @@ func (o *LLM) GenerateContent(ctx context.Context, messages []llms.MessageConten
 		Metadata:             opts.Metadata,
 	}
 	if opts.JSONMode {
-		req.ResponseFormat = ResponseFormatJSON
+		if opts.ReponseFormat != nil {
+			req.ResponseFormat = opts.ReponseFormat.(*openaiclient.ResponseFormat)
+		} else {
+			req.ResponseFormat = ResponseFormatJSON
+		}
 	}
 
 	// since req.Functions is deprecated, we need to use the new Tools API.
