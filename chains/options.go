@@ -67,7 +67,7 @@ type chainCallOption struct {
 	CallbackHandler callbacks.Handler
 
 	ResponseFormat any
-	JsonMode 	bool
+	JsonMode       bool
 }
 
 // WithModel is an option for LLM.Call.
@@ -176,7 +176,7 @@ func WithReponseFormat(reponseFormat any) ChainCallOption {
 	}
 }
 
-func getLLMCallOptions(options ...ChainCallOption) []llms.CallOption { //nolint:cyclop
+func GetLLMCallOptions(options ...ChainCallOption) []llms.CallOption { //nolint:cyclop
 	opts := &chainCallOption{}
 	for _, option := range options {
 		option(opts)
